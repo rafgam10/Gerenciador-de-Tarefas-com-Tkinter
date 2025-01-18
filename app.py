@@ -4,7 +4,7 @@ import ttkbootstrap as tkk
 
 # CONFIGURAÇÃO DA PÁGINA:
 
-root = Tk()
+root = Tk() 
 style = Style(theme="superhero")
 root.title("Gerenciador de Tarefas")
 root.geometry("600x900")
