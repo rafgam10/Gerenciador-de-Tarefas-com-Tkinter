@@ -18,13 +18,13 @@ def add_tarefas():
         entry_nome_tarefa.delete(0, END)
 
 
-def feito_tarefa():
+def completo_tarefa():
     itemSelect = listbox_exibição.curselection()
     if itemSelect:
         index = itemSelect[0]
         tarefa = listbox_exibição.get(index)
         listbox_exibição.delete(index)
-        listbox_exibição.insert(index, f"[Feito] {tarefa}")
+        listbox_exibição.insert(index, f"{tarefa} [Completo]")
 
 
 def del_tarefas():
@@ -61,7 +61,7 @@ frame_botoes = tkk.Frame(root)
 frame_botoes.grid(row=3, column=0, columnspan=20, pady=10)
 
 # Botões dentro do Frame
-button_check = tkk.Button(frame_botoes, bootstyle=verde ,width=15, text="Feito", command=feito_tarefa)
+button_check = tkk.Button(frame_botoes, bootstyle=verde ,width=15, text="Feito", command=completo_tarefa)
 button_delete = tkk.Button(frame_botoes, bootstyle=vermelho ,width=15, text="Remover", command=del_tarefas)
 button_check.grid(row=0, column=0, padx=10)
 button_delete.grid(row=0, column=1, padx=10)

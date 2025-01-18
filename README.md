@@ -9,8 +9,8 @@ Este projeto consiste em uma aplicação simples para gerenciar tarefas utilizan
 1. **Adicionar Tarefas**:
    - Permite ao usuário adicionar tarefas ao painel de exibição.
 
-2. **Marcar como Feito**:
-   - Atualiza a tarefa selecionada, adicionando o prefixo `[Feito]` para indicar que foi concluída.
+2. **Marcar como Completo**:
+   - Atualiza a tarefa selecionada, adicionando o prefixo `[Completo]` para indicar que foi concluída.
 
 3. **Remover Tarefas**:
    - Remove a tarefa selecionada da lista.
