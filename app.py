@@ -11,6 +11,32 @@ root.geometry("600x900")
 
 # CÓDIGO DOS MÉTODOS(FUNÇÕES) DOS COMANDOS:
 
+def add_tarefas():
+    tarefa = entry_nome_tarefa.get()
+    if tarefa:
+        listbox_exibição.insert(END ,tarefa)
+        entry_nome_tarefa.delete(0, END)
+
+
+def feito_tarefa():
+    itemSelect = listbox_exibição.curselection()
+    if itemSelect:
+        index = itemSelect[0]
+        tarefa = listbox_exibição.get(index)
+        listbox_exibição.delete(index)
+        listbox_exibição.insert(index, f"[Feito] {tarefa}")
+
+
+def del_tarefas():
+    itemSelect = listbox_exibição.curselection()
+    if itemSelect:
+        listbox_exibição.delete(itemSelect)
+
+
+# Variaveis de Paleta de cores:
+
+verde = "success"
+vermelho = "danger"
 
 # CÓDIGO DA JANELA:
 #
@@ -19,7 +45,7 @@ entry_nome_tarefa = tkk.Entry(root, width=50)
 entry_nome_tarefa.grid(row=0, column=0, columnspan=4, padx=10, pady=20)
 
 # Botão para adicionar tarefa
-button_add = tkk.Button(root, text="Adicionar", width=15)
+button_add = tkk.Button(root, text="Adicionar", width=15, command=add_tarefas)
 button_add.grid(row=0, column=5, columnspan=8, padx=10, pady=20)
 
 # Separador horizontal
@@ -35,8 +61,8 @@ frame_botoes = tkk.Frame(root)
 frame_botoes.grid(row=3, column=0, columnspan=20, pady=10)
 
 # Botões dentro do Frame
-button_check = tkk.Button(frame_botoes, width=15, text="Feito")
-button_delete = tkk.Button(frame_botoes, width=15, text="Remover")
+button_check = tkk.Button(frame_botoes, bootstyle=verde ,width=15, text="Feito", command=feito_tarefa)
+button_delete = tkk.Button(frame_botoes, bootstyle=vermelho ,width=15, text="Remover", command=del_tarefas)
 button_check.grid(row=0, column=0, padx=10)
 button_delete.grid(row=0, column=1, padx=10)
 
