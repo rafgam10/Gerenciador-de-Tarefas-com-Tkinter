@@ -66,6 +66,7 @@ button_delete = tkk.Button(frame_botoes, bootstyle=vermelho ,width=15, text="Rem
 button_check.grid(row=0, column=0, padx=10)
 button_delete.grid(row=0, column=1, padx=10)
 
+# Atalhos do Programa
 root.bind("<Return>", add_tarefas)
 root.bind("<F1>", completo_tarefa)
 root.bind("<F2>", del_tarefas)
