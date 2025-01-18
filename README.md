@@ -100,11 +100,11 @@ root.mainloop()
 Adicione uma imagem do projeto para ilustrar o layout e a funcionalidade. Você pode capturar a tela da aplicação em execução e salvar como `screenshot.png` no mesmo diretório do projeto. Em seguida, referencie no markdown:
 
 ```markdown
-![Image](https://github.com/user-attachments/assets/b5b68d22-c0dd-43cc-96c2-9825ceb86c92)
+![Gerenciador de Tarefas](img/screenshot_vazio.png)
 ```
 
 ```markdown
-![Image](https://github.com/user-attachments/assets/eccfbed8-305e-4048-89cf-9979c6bcd89a)
+![Gerenciador de Tarefas](img/tela_cheia_tarefa.png)
 ```
 
 ---
