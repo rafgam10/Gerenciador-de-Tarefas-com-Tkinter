@@ -15,6 +15,9 @@ Este projeto consiste em uma aplicação simples para gerenciar tarefas utilizan
 3. **Remover Tarefas**:
    - Remove a tarefa selecionada da lista.
 
+Obs. **Atalhos para cada Funcionalidades**:
+   - Atalhos para cada função do programa.
+
 ---
 
 ## Código Fonte
@@ -33,14 +36,14 @@ root.geometry("600x900")
 
 # CÓDIGO DOS MÉTODOS(FUNÇÕES) DOS COMANDOS:
 
-def add_tarefas():
+def add_tarefas(event=None):
     tarefa = entry_nome_tarefa.get()
     if tarefa:
         listbox_exibição.insert(END ,tarefa)
         entry_nome_tarefa.delete(0, END)
 
 
-def completo_tarefa():
+def completo_tarefa(event=None):
     itemSelect = listbox_exibição.curselection()
     if itemSelect:
         index = itemSelect[0]
@@ -49,7 +52,7 @@ def completo_tarefa():
         listbox_exibição.insert(index, f"{tarefa} [Completo]")
 
 
-def del_tarefas():
+def del_tarefas(event=None):
     itemSelect = listbox_exibição.curselection()
     if itemSelect:
         listbox_exibição.delete(itemSelect)
@@ -67,7 +70,7 @@ entry_nome_tarefa = tkk.Entry(root, width=50)
 entry_nome_tarefa.grid(row=0, column=0, columnspan=4, padx=10, pady=20)
 
 # Botão para adicionar tarefa
-button_add = tkk.Button(root, text="Adicionar", width=15, command=add_tarefas)
+button_add = tkk.Button(root, text="Adicionar - Enter", width=15, command=add_tarefas)
 button_add.grid(row=0, column=5, columnspan=8, padx=10, pady=20)
 
 # Separador horizontal
@@ -83,13 +86,19 @@ frame_botoes = tkk.Frame(root)
 frame_botoes.grid(row=3, column=0, columnspan=20, pady=10)
 
 # Botões dentro do Frame
-button_check = tkk.Button(frame_botoes, bootstyle=verde ,width=15, text="Feito", command=completo_tarefa)
-button_delete = tkk.Button(frame_botoes, bootstyle=vermelho ,width=15, text="Remover", command=del_tarefas)
+button_check = tkk.Button(frame_botoes, bootstyle=verde ,width=15, text="Feito - F1", command=completo_tarefa)
+button_delete = tkk.Button(frame_botoes, bootstyle=vermelho ,width=15, text="Remover - F2", command=del_tarefas)
 button_check.grid(row=0, column=0, padx=10)
 button_delete.grid(row=0, column=1, padx=10)
 
+# Atalhos do Programa
+root.bind("<Return>", add_tarefas)
+root.bind("<F1>", completo_tarefa)
+root.bind("<F2>", del_tarefas)
+
 # Iniciar o loop principal
 root.mainloop()
+
 
 ```
 
