@@ -10,111 +10,150 @@ Este projeto consiste em uma aplicação simples para gerenciar tarefas utilizan
    - Permite ao usuário adicionar tarefas ao painel de exibição.
 
 2. **Marcar como Completo**:
-   - Atualiza a tarefa selecionada, adicionando o prefixo `[Completo]` para indicar que foi concluída.
+   - Atualiza a tarefa selecionada, alterando o fundo do texto para indicar que foi concluída.
 
 3. **Remover Tarefas**:
    - Remove a tarefa selecionada da lista.
 
-Obs. **Atalhos para cada Funcionalidades**:
-   - Atalhos para cada função do programa.
+4. **Atalhos do Programa**:
+   - Atalhos para cada função do programa, permitindo maior agilidade.
 
 ---
 
 ## Código Fonte
 
+### Estrutura de Arquivos
+O projeto está organizado da seguinte forma:
+
+```
+Gerenciador de Tarefas/
+├── env
+├── resources/ #Pasta de icones e img
+    ├── icons 
+    ├── img
+├── app.py                # Arquivo principal que inicializa a interface
+├── utils/
+│   ├── constants.py      # Variáveis de configuração e constantes globais
+│   ├── function.py       # Funções e classes para gerenciamento de tarefas
+├── img/
+│   ├── screenshot_vazio.png
+│   ├── tela_cheia_tarefa.png
+├── requirements.txt      # Requisisão do projeto
+└── README.md             # Documentação do projeto
+```
+
+---
+
+## Interface Principal
+
+### Arquivo `app.py`
+
 ```python
 from tkinter import *
 from ttkbootstrap import Style
-import ttkbootstrap as tkk
+from utils.function import criar_task
 
 # CONFIGURAÇÃO DA PÁGINA:
 
-root = Tk() 
+root = Tk()
 style = Style(theme="superhero")
 root.title("Gerenciador de Tarefas")
 root.geometry("600x900")
 
-# CÓDIGO DOS MÉTODOS(FUNÇÕES) DOS COMANDOS:
-
-def add_tarefas(event=None):
-    tarefa = entry_nome_tarefa.get()
-    if tarefa:
-        listbox_exibição.insert(END ,tarefa)
-        entry_nome_tarefa.delete(0, END)
-
-
-def completo_tarefa(event=None):
-    itemSelect = listbox_exibição.curselection()
-    if itemSelect:
-        index = itemSelect[0]
-        tarefa = listbox_exibição.get(index)
-        listbox_exibição.delete(index)
-        listbox_exibição.insert(index, f"{tarefa} [Completo]")
-
-
-def del_tarefas(event=None):
-    itemSelect = listbox_exibição.curselection()
-    if itemSelect:
-        listbox_exibição.delete(itemSelect)
-
-
-# Variaveis de Paleta de cores:
-
-verde = "success"
-vermelho = "danger"
-
-# CÓDIGO DA JANELA:
-#
 # Campo de entrada para adicionar tarefas
-entry_nome_tarefa = tkk.Entry(root, width=50)
+entry_nome_tarefa = ttk.Entry(root, width=50)
 entry_nome_tarefa.grid(row=0, column=0, columnspan=4, padx=10, pady=20)
 
 # Botão para adicionar tarefa
-button_add = tkk.Button(root, text="Adicionar - Enter", width=15, command=add_tarefas)
+button_add = ttk.Button(
+    root, text="Adicionar - Enter", width=15, command=lambda: criar_task(entry_nome_tarefa, root)
+)
 button_add.grid(row=0, column=5, columnspan=8, padx=10, pady=20)
 
 # Separador horizontal
-separador = tkk.Separator(root, orient="horizontal")
+separador = ttk.Separator(root, orient="horizontal")
 separador.grid(row=1, column=0, columnspan=20, sticky="ew", padx=10, pady=20)
 
-# Painel de exibição das taks:
-listbox_exibição = Listbox(root, height=30 , width=50)
-listbox_exibição.grid(row=2, column=0, columnspan=20, padx=10, pady=5)
-
-# Frame para os botões "Feito" e "Remover"
-frame_botoes = tkk.Frame(root)
-frame_botoes.grid(row=3, column=0, columnspan=20, pady=10)
-
-# Botões dentro do Frame
-button_check = tkk.Button(frame_botoes, bootstyle=verde ,width=15, text="Feito - F1", command=completo_tarefa)
-button_delete = tkk.Button(frame_botoes, bootstyle=vermelho ,width=15, text="Remover - F2", command=del_tarefas)
-button_check.grid(row=0, column=0, padx=10)
-button_delete.grid(row=0, column=1, padx=10)
-
 # Atalhos do Programa
-root.bind("<Return>", add_tarefas)
-root.bind("<F1>", completo_tarefa)
-root.bind("<F2>", del_tarefas)
+root.bind("<Return>", lambda event: criar_task(entry_nome_tarefa, root))
 
 # Iniciar o loop principal
 root.mainloop()
+```
 
+---
 
+### Arquivo `utils/function.py`
+
+```python
+from tkinter import END
+from ttkbootstrap import ttk
+from .constants import *
+
+class ModelTask:
+    def __init__(self, root, nome_tarefa):
+        global linhaN
+
+        # Criação da Task
+        self.label_inst = ttk.Label(
+            root,
+            text=nome_tarefa,
+            font=("Ariel", 16),
+            background="#4e5d6c",
+            width=20,
+            anchor="w",
+            relief="solid",
+            justify="center"
+        )
+        self.label_inst.grid(row=linhaN, column=colunaLabelN, padx=5, pady=5)
+
+        self.button_check = ttk.Button(
+            root,
+            text="Check",
+            width=5,
+            bootstyle=verde,
+            command=self.check_task
+        )
+        self.button_check.grid(row=linhaN, column=colunaButtonCheckN, padx=5, pady=5)
+
+        self.button_delete = ttk.Button(
+            root,
+            text=" X ",
+            width=5,
+            bootstyle=vermelho,
+            command=self.delete_task
+        )
+        self.button_delete.grid(row=linhaN, column=colunaButtonDeleteN, padx=5, pady=5)
+
+    def check_task(self):
+        self.label_inst.configure(background="#5cb85c")
+
+    def delete_task(self):
+        self.label_inst.destroy()
+        self.button_check.destroy()
+        self.button_delete.destroy()
+        lista_de_task.remove(self)
+
+def criar_task(entry, root):
+    global linhaN, lista_de_task
+
+    nome_tarefa = entry.get()
+    if nome_tarefa:
+        linhaN += 1
+        task = ModelTask(root, nome_tarefa)
+        lista_de_task.append(task)
+        entry.delete(0, END)
 ```
 
 ---
 
 ## Imagem do Projeto
 
-Imagens do Projeto para visão melhor.
+Imagens do projeto para melhor visualização:
 
-```markdown
-![Gerenciador de Tarefas](img/screenshot_vazio.png)
-```
+![Gerenciador de Tarefas](/resources/img/todo_vazio.png)
 
-```markdown
-![Gerenciador de Tarefas](img/tela_cheia_tarefa.png)
-```
+![Gerenciador de Tarefas](/resources/img/todo_cheio.png)
 
 ---
 
@@ -124,6 +163,7 @@ Imagens do Projeto para visão melhor.
 - Biblioteca ttkbootstrap.
 
 ### Instalação de Dependências
+
 Crie um ambiente virtual e instale as dependências:
 
 ```bash
@@ -148,7 +188,14 @@ python app.py
 
 ## Melhorias Futuras
 
-- Adicionar suporte a persistência de dados (salvar tarefas em um arquivo).
+- Adicionar suporte à persistência de dados (salvar tarefas em um arquivo).
 - Melhorar a interface com novos temas e ícones.
 - Adicionar opção para editar tarefas já existentes.
 
+--- 
+
+### **Principais Ajustes**
+1. Incluí a estrutura de arquivos para melhor clareza do projeto.
+2. Alinhei os exemplos de código ao formato atual.
+3. Adicionei os atalhos e funcionalidades destacando sua importância.
+4. Melhorar o Frontend.
